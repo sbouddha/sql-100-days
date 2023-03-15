@@ -71,6 +71,7 @@ Please note that these questions are not literal copies of SQL interview questio
 Self-Join Practice Problems 
 #1: MoM Percent Change 
 Context: Oftentimes it's useful to know how much a key metric, such as monthly active users, changes between months. Say we have a table logins in the form: 
+
 | user_id | date       |
 |---------|------------|
 | 1       | 2018-07-01 |
@@ -79,6 +80,7 @@ Context: Oftentimes it's useful to know how much a key metric, such as monthly a
 | 1       | 2018-07-02 |
 | ...     | ...        |
 | 234     | 2018-10-04 |
+
 Task: Find the month-over-month percentage change for monthly active users (MAU). 
 Solution:
 
@@ -127,19 +129,23 @@ WITH mau AS
 
 #2: Tree Structure Labeling   
 Context: Say you have a table tree with a column of nodes and a column corresponding parent nodes 
+
 node   parent
 1       2
 2       5
 3       5
 4       3
 5       NULL 
+
 Task: Write SQL such that we label each node as a “leaf”, “inner” or “Root” node, such that for the nodes above we get: 
+
 node    label  
 1       Leaf
 2       Inner
 3       Inner
 4       Leaf
 5       Root
+
 A solution which works for the above example will receive full credit, although you can receive extra credit for providing a solution that is generalizable to a tree of any depth (not just depth = 2, as is the case in the example above). 
 
 (Side note: ﻿this link﻿ has more details on Tree data structure terminology. Not needed to solve the problem though!)
@@ -214,6 +220,7 @@ SELECT
 Acknowledgement: this problem is adapted from SiSense’s ﻿“Using Self Joins to Calculate Your Retention, Churn, and Reactivation Metrics”﻿ blog post
 PART 1: 
 Context: Say we have login data in the table logins: 
+
 | user_id | date       |
 |---------|------------|
 | 1       | 2018-07-01 |
@@ -222,6 +229,7 @@ Context: Say we have login data in the table logins:
 | 1       | 2018-07-02 |
 | ...     | ...        |
 | 234     | 2018-10-04 |
+
 Task: Write a query that gets the number of retained users per month. In this case, retention for a given month is defined as the number of users who logged in that month who also logged in the immediately previous month. 
 Solution:
 SELECT 
@@ -308,21 +316,25 @@ Solution:
 Acknowledgement: This problem was inspired by Sisense’s﻿ “Cash Flow modeling in SQL”﻿ blog post 
 
 Context: Say we have a table transactions in the form:
+
 | date       | cash_flow |
 |------------|-----------|
 | 2018-01-01 | -1000     |
 | 2018-01-02 | -100      |
 | 2018-01-03 | 50        |
 | ...        | ...       |
+
 Where cash_flow is the revenues minus costs for each day. 
 
 Task: Write a query to get cumulative cash flow for each day such that we end up with a table in the form below: 
+
 | date       | cumulative_cf |
 |------------|---------------|
 | 2018-01-01 | -1000         |
 | 2018-01-02 | -1100         |
 | 2018-01-03 | -1050         |
 | ...        | ...           |
+
 Solution:
 SELECT 
     a.date date, 
@@ -349,6 +361,7 @@ Acknowledgement: This problem is adapted from Sisense’s ﻿“Rolling Averages
 Note: there are different ways to compute rolling/moving averages. Here we'll use a preceding average which means that the metric for the 7th day of the month would be the average of the preceding 6 days and that day itself. 
 
 Context: Say we have table signups in the form: 
+
 | date       | sign_ups |
 |------------|----------|
 | 2018-01-01 | 10       |
@@ -356,6 +369,7 @@ Context: Say we have table signups in the form:
 | 2018-01-03 | 50       |
 | ...        | ...      |
 | 2018-10-01 | 35       |
+
 Task: Write a query to get 7-day rolling (preceding) average of daily sign ups. 
 Solution:
 SELECT 
@@ -379,6 +393,7 @@ from
 Acknowledgement: This problem was inspired by Sisense’s ﻿“Analyzing Your Email with SQL”﻿ blog post 
 
 Context: Say we have a table emails that includes emails sent to and from ﻿zach@g.com﻿:
+
 | id | subject  | from         | to           | timestamp           |
 |----|----------|--------------|--------------|---------------------|
 | 1  | Yosemite | zach@g.com   | thomas@g.com | 2018-01-02 12:45:03 |
@@ -388,6 +403,7 @@ Context: Say we have a table emails that includes emails sent to and from ﻿zac
 | 5  | Yosemite | zach@g.com   | thomas@g.com | 2018-01-03 14:02:01 |
 | 6  | Yosemite | thomas@g.com | zach@g.com   | 2018-01-03 15:01:05 |
 | .. | ..       | ..           | ..           | ..                  |
+
 Task: Write a query to get the response time per email (id) sent to zach@g.com . Do not include ids that did not receive a response from ﻿zach@g.com﻿. Assume each email thread has a unique subject. Keep in mind a thread may have multiple responses back-and-forth between ﻿zach@g.com﻿ and another email address. 
 Solution:
 SELECT 
@@ -413,18 +429,21 @@ JOIN
 Window Function Practice Problems 
 #1: Get the ID with the highest value 
 Context: Say we have a table salaries with data on employee salary and department in the following format: 
-  depname  | empno | salary |     
------------+-------+--------+
- develop   |    11 |   5200 | 
- develop   |     7 |   4200 | 
- develop   |     9 |   4500 | 
- develop   |     8 |   6000 | 
- develop   |    10 |   5200 | 
- personnel |     5 |   3500 | 
- personnel |     2 |   3900 | 
- sales     |     3 |   4800 | 
- sales     |     1 |   5000 | 
- sales     |     4 |   4800 | 
+
+|  depname  | empno | salary |     
+|-----------|-------|--------|
+| develop   |    11 |   5200 | 
+| develop   |     7 |   4200 | 
+| develop   |     9 |   4500 | 
+| develop   |     8 |   6000 | 
+| develop   |    10 |   5200 | 
+| personnel |     5 |   3500 | 
+| personnel |     2 |   3900 | 
+| sales     |     3 |   4800 | 
+| sales     |     1 |   5000 | 
+| sales     |     4 |   4800 | 
+
+
 Task: Write a query to get the empno with the highest salary. Make sure your solution can handle ties!
 Solution:
 WITH max_salary AS (
@@ -456,31 +475,34 @@ WHERE
 #2: Average and rank with a window function (multi-part)
 PART 1:
 Context: Say we have a table salaries in the format:
-  depname  | empno | salary |     
------------+-------+--------+
- develop   |    11 |   5200 | 
- develop   |     7 |   4200 | 
- develop   |     9 |   4500 | 
- develop   |     8 |   6000 | 
- develop   |    10 |   5200 | 
- personnel |     5 |   3500 | 
- personnel |     2 |   3900 | 
- sales     |     3 |   4800 | 
- sales     |     1 |   5000 | 
- sales     |     4 |   4800 | 
+
+|  depname  | empno | salary |     
+|-----------|-------|--------|
+| develop   |    11 |   5200 | 
+| develop   |     7 |   4200 | 
+| develop   |     9 |   4500 | 
+| develop   |     8 |   6000 | 
+| develop   |    10 |   5200 | 
+| personnel |     5 |   3500 | 
+| personnel |     2 |   3900 | 
+| sales     |     3 |   4800 | 
+| sales     |     1 |   5000 | 
+| sales     |     4 |   4800 |
+
 Task: Write a query that returns the same table, but with a new column that has average salary per depname. We would expect a table in the form: 
-  depname  | empno | salary | avg_salary |     
------------+-------+--------+------------+
- develop   |    11 |   5200 |       5020 |
- develop   |     7 |   4200 |       5020 | 
- develop   |     9 |   4500 |       5020 |
- develop   |     8 |   6000 |       5020 | 
- develop   |    10 |   5200 |       5020 | 
- personnel |     5 |   3500 |       3700 |
- personnel |     2 |   3900 |       3700 |
- sales     |     3 |   4800 |       4867 | 
- sales     |     1 |   5000 |       4867 | 
- sales     |     4 |   4800 |       4867 |
+| depname  | empno | salary | avg_salary |     
+|----------|-------|--------|------------|
+| develop  |    11 |   5200 |       5020 |
+| develop  |     7 |   4200 |       5020 | 
+| develop  |     9 |   4500 |       5020 |
+| develop  |     8 |   6000 |       5020 | 
+| develop  |    10 |   5200 |       5020 | 
+| personnel|     5 |   3500 |       3700 |
+| personnel|     2 |   3900 |       3700 |
+| sales    |     3 |   4800 |       4867 | 
+| sales    |     1 |   5000 |       4867 | 
+| sales    |     4 |   4800 |       4867 |
+
 Solution:
 SELECT 
     *, 
@@ -493,18 +515,20 @@ FROM
     salaries
 PART 2:
 Task: Write a query that adds a column with the rank of each employee based on their salary within their department, where the employee with the highest salary gets the rank of 1. We would expect a table in the form: 
-  depname  | empno | salary | salary_rank |     
------------+-------+--------+-------------+
- develop   |    11 |   5200 |           2 |
- develop   |     7 |   4200 |           5 | 
- develop   |     9 |   4500 |           4 |
- develop   |     8 |   6000 |           1 | 
- develop   |    10 |   5200 |           2 | 
- personnel |     5 |   3500 |           2 |
- personnel |     2 |   3900 |           1 |
- sales     |     3 |   4800 |           2 | 
- sales     |     1 |   5000 |           1 | 
- sales     |     4 |   4800 |           2 | 
+
+|  depname  | empno | salary | salary_rank |     
+|----------|--------|--------|-------------|
+| develop   |    11 |   5200 |           2 |
+| develop   |     7 |   4200 |           5 | 
+| develop   |     9 |   4500 |           4 |
+| develop   |     8 |   6000 |           1 | 
+| develop   |    10 |   5200 |           2 | 
+| personnel |     5 |   3500 |           2 |
+| personnel |     2 |   3900 |           1 |
+| sales     |     3 |   4800 |           2 | 
+| sales     |     1 |   5000 |           1 | 
+| sales     |     4 |   4800 |           2 | 
+
 Solution:
 SELECT 
     *, 
@@ -515,17 +539,21 @@ SELECT
 Other Medium/Hard SQL Practice Problems 
 #1: Histograms 
 Context: Say we have a table sessions where each row is a video streaming session with length in seconds: 
+
 | session_id | length_seconds |
 |------------|----------------|
 | 1          | 23             |
 | 2          | 453            |
 | 3          | 27             |
 | ..         | ..             |
+
 Task: Write a query to count the number of sessions that fall into bands of size 5, i.e. for the above snippet, produce something akin to: 
+
 | bucket  | count |
 |---------|-------|
 | 20-25   | 2     |
 | 450-455 | 1     |
+
 Get complete credit for the proper string labels (“5-10”, etc.) but near complete credit for something that is communicable as the bin. 
 Solution:
 WITH bin_label AS
@@ -546,6 +574,7 @@ WITH bin_label AS
 #2: CROSS JOIN (multi-part)
 PART 1: 
 Context: Say we have a table state_streams where each row is a state and the total number of hours of streaming from a video hosting service: 
+
 | state | total_streams |
 |-------|---------------|
 | NC    | 34569         |
@@ -553,13 +582,16 @@ Context: Say we have a table state_streams where each row is a state and the tot
 | CA    | 98324         |
 | MA    | 19345         |
 | ..    | ..            |
+
 (In reality these kinds of aggregate tables would normally have a date column, but we’ll exclude that component in this problem) 
 
 Task: Write a query to get the pairs of states with total streaming amounts within 1000 of each other. For the snippet above, we would want to see something like:
+
 | state_a | state_b |
 |---------|---------|
 | NC      | SC      |
 | SC      | NC      |
+
 Solution:
 SELECT
     a.state as state_a, 
@@ -604,6 +636,7 @@ Acknowledgement: This question is adapted from ﻿this Stack Overflow question�
 Note: this question is probably more complex than the kind you would encounter in an interview. Consider it a challenge problem, or feel free to skip it! 
 
 Context: Say I have a table table in the following form, where a user can be mapped to multiple values of class:
+
 | user | class |
 |------|-------|
 | 1    | a     |
@@ -611,13 +644,16 @@ Context: Say I have a table table in the following form, where a user can be map
 | 1    | b     |
 | 2    | b     |
 | 3    | a     |
+
 Task: Assume there are only two possible values for class. Write a query to count the number of users in each class such that any user who has label a and b gets sorted into b, any user with just a gets sorted into a and any user with just b gets into b. 
 
 For table that would result in the following table: 
+
 | class | count |
 |-------|-------|
 | a     | 1     |
 | b     | 2     |
+
 Solution: 
 WITH usr_b_sum AS 
 (
