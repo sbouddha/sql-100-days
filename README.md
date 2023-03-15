@@ -24,6 +24,7 @@ Task: Find the month-over-month percentage change for monthly active users (MAU)
 Solution:
 
 (This solution, like other solution code blocks you will see in this doc, contains comments about SQL syntax that may differ between flavors of SQL or other comments about the solutions as listed) 
+```
 WITH mau AS
 (
   SELECT 
@@ -64,7 +65,7 @@ WITH mau AS
     * Could also have done `ON b.month_timestamp = a.month_timestamp + interval '1 month'` 
     */
     mau b ON a.month_timestamp = b.month_timestamp - interval '1 month' 
-  
+``` 
 
 #2: Tree Structure Labeling   
 Context: Say you have a table tree with a column of nodes and a column corresponding parent nodes 
@@ -91,6 +92,7 @@ A solution which works for the above example will receive full credit, although 
 Solution:
 
 Note: This solution works for the example above with tree depth = 2, but is not generalizable beyond that. 
+```
 WITH join_table AS
 (
 SELECT 
@@ -113,10 +115,11 @@ SELECT
     END AS label 
  FROM 
     join_table 
-        
+```        
 An alternate solution, that is generalizable to any tree depth: 
 
 Acknowledgement: this more generalizable solution was contributed by Fabian Hofmann on 5/2/20. Thank, FH! 
+```
 WITH join_table AS
 (
     SELECT
@@ -141,9 +144,12 @@ SELECT
     END AS label
 FROM
     join_table 
+```
 An alternate solution, without explicit joins: 
 
 Acknowledgement: William Chargin on 5/2/20 noted that WHERE parent IS NOT NULL  is needed to make this solution return Leaf instead of NULL. Thanks, WC! 
+
+```
 SELECT
     node,
     CASE 
@@ -154,7 +160,7 @@ SELECT
     END AS label 
  from 
     tree
-
+```
 #3: Retained Users Per Month (multi-part)
 Acknowledgement: this problem is adapted from SiSense’s ﻿“Using Self Joins to Calculate Your Retention, Churn, and Reactivation Metrics”﻿ blog post
 PART 1: 
@@ -171,6 +177,7 @@ Context: Say we have login data in the table logins:
 
 Task: Write a query that gets the number of retained users per month. In this case, retention for a given month is defined as the number of users who logged in that month who also logged in the immediately previous month. 
 Solution:
+```
 SELECT 
     DATE_TRUNC('month', a.date) month_timestamp, 
     COUNT(DISTINCT a.user_id) retained_users 
@@ -182,11 +189,14 @@ SELECT
                                              interval '1 month'
  GROUP BY 
     date_trunc('month', a.date)
+```
+
 Acknowledgement: Tom Moertel pointed out de-duping user-login pairs before the self-join would make the solution more efficient and contributed the alternate solution below. Thanks, TM! 
 
 Note: De-duping logins would also make the given solutions to Parts 2 and 3 of this problem more efficient as well.
 
 Alternate solution: 
+```
 WITH DistinctMonthlyUsers AS (
   /*
   * For each month, compute the *set* of users having logins.
@@ -209,9 +219,12 @@ LEFT JOIN
     AND
     CurrentMonth.user_id = PriorMonth.user_id
 GROUP BY CurrentMonth.month_timestamp
+```
+
 PART 2: 
 Task: Now we’ll take retention and turn it on its head: Write a query to find many users last month did not come back this month. i.e. the number of churned users.  
 Solution:
+```
 SELECT
     DATE_TRUNC('month', a.date) month_timestamp,
     COUNT(DISTINCT b.user_id) churned_users 
@@ -225,11 +238,13 @@ WHERE
     a.user_id IS NULL 
 GROUP BY 
     DATE_TRUNC('month', a.date)
+```
 Note that there are solutions to this problem that can use LEFT or RIGHT joins. 
 PART 3:
 Context: You now want to see the number of active users this month who have been reactivated — in other words, users who have churned but this month they became active again. Keep in mind a user can reactivate after churning before the previous month. An example of this could be a user active in February (appears in logins), no activity in March and April, but then active again in May (appears in logins), so they count as a reactivated user for May . 
 
 Task: Create a table that contains the number of reactivated users per month. 
+```
 Solution:
      SELECT 
         DATE_TRUNC('month', a.date) month_timestamp,
@@ -250,6 +265,7 @@ Solution:
         DATE_TRUNC('month', a.date)
      HAVING 
         month_timestamp > most_recent_active_previously + interval '1 month' 
+```
 
 #4: Cumulative Sums 
 Acknowledgement: This problem was inspired by Sisense’s﻿ “Cash Flow modeling in SQL”﻿ blog post 
@@ -275,6 +291,7 @@ Task: Write a query to get cumulative cash flow for each day such that we end up
 | ...        | ...           |
 
 Solution:
+```
 SELECT 
     a.date date, 
     SUM(b.cash_flow) as cumulative_cf 
@@ -294,6 +311,9 @@ FROM
     transactions
 ORDER BY 
     date ASC
+```
+
+
 #5: Rolling Averages 
 Acknowledgement: This problem is adapted from Sisense’s ﻿“Rolling Averages in MySQL and SQL Server”﻿ blog post 
 
@@ -311,6 +331,7 @@ Context: Say we have table signups in the form:
 
 Task: Write a query to get 7-day rolling (preceding) average of daily sign ups. 
 Solution:
+```
 SELECT 
   a.date,
   AVG(b.sign_ups) average_sign_ups 
@@ -320,14 +341,17 @@ JOIN
   signups b ON a.date <= b.date + interval '6 days' AND a.date >= b.date
 GROUP BY
   a.date
+```
 Acknowledgement: Shay Halfon pointed out that using a window function would produce an identical and more efficient solution. Thanks, SH! 
 
 Alternate solution: 
+```
 SELECT
     date,      
     AVG(sign_ups) OVER(ORDER BY date ROWS BETWEEN 6 PRECEDING AND 0 PRECEDING)
 from 
     sign_ups 
+```
 #6: Multiple Join Conditions 
 Acknowledgement: This problem was inspired by Sisense’s ﻿“Analyzing Your Email with SQL”﻿ blog post 
 
@@ -345,6 +369,7 @@ Context: Say we have a table emails that includes emails sent to and from ﻿zac
 
 Task: Write a query to get the response time per email (id) sent to zach@g.com . Do not include ids that did not receive a response from ﻿zach@g.com﻿. Assume each email thread has a unique subject. Keep in mind a thread may have multiple responses back-and-forth between ﻿zach@g.com﻿ and another email address. 
 Solution:
+```
 SELECT 
     a.id, 
     MIN(b.timestamp) - a.timestamp as time_to_respond 
@@ -364,7 +389,7 @@ JOIN
     a.to = 'zach@g.com' 
  GROUP BY 
     a.id 
-
+```
 Window Function Practice Problems 
 #1: Get the ID with the highest value 
 Context: Say we have a table salaries with data on employee salary and department in the following format: 
@@ -385,6 +410,7 @@ Context: Say we have a table salaries with data on employee salary and departmen
 
 Task: Write a query to get the empno with the highest salary. Make sure your solution can handle ties!
 Solution:
+```
 WITH max_salary AS (
     SELECT 
         MAX(salary) max_salary
@@ -410,7 +436,7 @@ FROM
   sal_rank
 WHERE
   rnk = 1;
-
+```
 #2: Average and rank with a window function (multi-part)
 PART 1:
 Context: Say we have a table salaries in the format:
@@ -443,6 +469,7 @@ Task: Write a query that returns the same table, but with a new column that has 
 | sales    |     4 |   4800 |       4867 |
 
 Solution:
+```
 SELECT 
     *, 
     /*
@@ -452,6 +479,7 @@ SELECT
     ROUND(AVG(salary),0) OVER (PARTITION BY depname) avg_salary
 FROM
     salaries
+```
 PART 2:
 Task: Write a query that adds a column with the rank of each employee based on their salary within their department, where the employee with the highest salary gets the rank of 1. We would expect a table in the form: 
 
@@ -469,11 +497,13 @@ Task: Write a query that adds a column with the rank of each employee based on t
 | sales     |     4 |   4800 |           2 | 
 
 Solution:
+```
 SELECT 
     *, 
     RANK() OVER(PARTITION BY depname ORDER BY salary DESC) salary_rank
  FROM  
     salaries 
+```
 
 Other Medium/Hard SQL Practice Problems 
 #1: Histograms 
@@ -495,6 +525,7 @@ Task: Write a query to count the number of sessions that fall into bands of size
 
 Get complete credit for the proper string labels (“5-10”, etc.) but near complete credit for something that is communicable as the bin. 
 Solution:
+```
 WITH bin_label AS
 (SELECT 
     session_id, 
@@ -509,7 +540,7 @@ WITH bin_label AS
     bin_label
  ORDER BY 
     bin_label ASC 
-
+```
 #2: CROSS JOIN (multi-part)
 PART 1: 
 Context: Say we have a table state_streams where each row is a state and the total number of hours of streaming from a video hosting service: 
@@ -532,6 +563,7 @@ Task: Write a query to get the pairs of states with total streaming amounts with
 | SC      | NC      |
 
 Solution:
+```
 SELECT
     a.state as state_a, 
     b.state as state_b 
@@ -553,12 +585,13 @@ SELECT
     ABS(a.total_streams - b.total_streams) < 1000
     AND 
     a.state <> b.state 
-
+```
 PART 2: 
 Note: This question is considered more of a bonus problem than an actual SQL pattern. Feel free to skip it!
 
 Task: How could you modify the SQL from the solution to Part 1 of this question so that duplicates are removed? For example, if we used the sample table from Part 1, the pair NC and SC should only appear in one row instead of two. 
 Solution: 
+```
 SELECT
     a.state as state_a, 
     b.state as state_b 
@@ -568,7 +601,7 @@ SELECT
     ABS(a.total_streams - b.total_streams) < 1000
     AND 
     a.state > b.state 
-
+```
 #3: Advancing Counting 
 Acknowledgement: This question is adapted from ﻿this Stack Overflow question﻿ by me (zthomas.nc) 
 
@@ -594,6 +627,7 @@ For table that would result in the following table:
 | b     | 2     |
 
 Solution: 
+```
 WITH usr_b_sum AS 
 (
     SELECT 
@@ -623,9 +657,10 @@ GROUP BY
     class 
 ORDER BY 
     class ASC
-
+```
     
 Alternate solution: Using SELECTs in the SELECT statement and UNION: 
+```
 SELECT 
     "a" class,
     COUNT(DISTINCT user_id) -
@@ -634,9 +669,11 @@ UNION
 SELECT
     "b" class,
     (SELECT COUNT(DISTINCT user_id) FROM table WHERE class = 'b') count 
+```
 Alternate solution: Since the problem as stated didn’t ask for generalizable solution, you can leverage the fact that b > a to produce this straightforward solution: 
 
 Acknowledgement: Thanks to Karan Gadiya for contributing this solution. Thanks, KG! 
+```
 WITH max_class AS (
     SELECT
         user,
@@ -654,3 +691,4 @@ FROM
     max_class
 GROUP BY
     class    
+```
