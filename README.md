@@ -1,69 +1,8 @@
-Ribbon
-Outline
-The Best Medium-hard Data Analyst SQL Interview QuestionsLink to heading
-Background & MotivationLink to heading
-Assumptions & How To Use This GuideLink to heading
-Tips On Solving Difficult SQL Interview QuestionsLink to heading
-Acknowledgments And Additional ResourcesLink to heading
-Self-join Practice ProblemsLink to heading
-#1: Mom Percent ChangeLink to heading
-#2: Tree Structure LabelingLink to heading
-#3: Retained Users Per Month (Multi-part)Link to heading
-Part 1:Link to heading
-Part 2:Link to heading
-Part 3:Link to heading
-#4: Cumulative SumsLink to heading
-#5: Rolling AveragesLink to heading
-#6: Multiple Join ConditionsLink to heading
-Window Function Practice ProblemsLink to heading
-#1: Get The ID With The Highest ValueLink to heading
-#2: Average And Rank With A Window Function (Multi-part)Link to heading
-Part 1:Link to heading
-Part 2:Link to heading
-Other Medium/hard SQL Practice ProblemsLink to heading
-#1: HistogramsLink to heading
-#2: CROSS JOIN (Multi-part)Link to heading
-Part 1:Link to heading
-Part 2:Link to heading
-#3: Advancing CountingLink to heading
-Document
-The Best Medium-Hard Data Analyst SQL Interview Questions  
-By Zachary Thomas (﻿zthomas.nc@gmail.com﻿, ﻿Twitter﻿, ﻿LinkedIn﻿) 
+**Courtesy: By Zachary Thomas (zthomas.nc@gmail.com, Twitter, LinkedIn)**
 
-Tip: See the Table of Contents (document outline) by hovering over the vertical line on the right side of the page 
+**The Best Medium-Hard Data Analyst SQL Interview Questions**
 
-Update: Thanks everyone for the support and feedback! See this discussion on this post on ﻿Hacker News﻿, ﻿Linkedin﻿, Eric Weber’s ﻿Linkedin post﻿. Also, feel free to check out my Medium post on ﻿Metric Design﻿. Thank you!
-Background & Motivation
-The first 70% of SQL is pretty straightforward but the remaining 30% can be pretty tricky.
-
-Between the fall of 2015 and the summer of 2019 I interviewed for data analyst and data scientists positions four separate times, getting to onsite interviews at over a dozen companies. After an interview in 2017 went poorly — mostly due to me floundering at the more difficult SQL questions they asked me — I started putting together a study guide of medium and hard SQL questions to better prepare and found it particularly useful during my 2019 interview cycle. Over the past year I have shared that guide with a couple of friends, and with the extra time on my hands due to the coronavirus pandemic, I have polished it up into this doc. 
-
-There are plenty of great beginner SQL guides out there. My favorites are Codecademy’s ﻿interactive SQL courses﻿ and Zi Chong Kao’s ﻿Select Star SQL﻿. However, like I told a friend, while the first 70% of SQL is pretty straightforward, the remaining 30% can be pretty tricky. Data analyst and data scientist interview questions at technology companies often pull from that 30%.  
-
-Strangely, I have never really found a comprehensive source online for those medium-hard SQL questions, which is why I put together this guide. 
-
-Working through this guide should improve your performance on data analyst interviews. It should also make you better at your current and future job positions. Personally, I find some of the SQL patterns found in this doc useful for ETLs powering reporting tools featuring trends over time. 
-
-To be clear, data analyst and data scientist interviews consist of more than SQL questions. Other common topics include explaining past projects, A/B testing (I like ﻿Udacity’s course﻿ on the subject), metric development and open-ended analytical problems. This ﻿Quora answer﻿ has Facebook’s product analyst interview guide circa 2017, which discusses this topic in more depth. That said, if improving your SQL skills can make your interviews less stressful than they already are, it could very well be worth your time. 
-
-In the future, I may transition this doc to a website like ﻿Select Star SQL﻿ with an embedded SQL editor so that readers can write SQL statements to questions and get real-time feedback on their code. Another option could be adding these questions as problems on Leetcode. For the time being though I just wanted to publish this doc so that people could find it useful now.  
-
-I would love to get your feedback on this doc. Please drop a note if you find this useful, have improvements/corrections, or encounter other good resources for medium/hard difficulty SQL questions. 
-Assumptions & How to use this guide 
-Assumptions about SQL proficiency: This guide assumes you have a working knowledge of SQL. You probably use it frequently at work already but want to sharpen your skills on topics like self-joins and window functions. 
-
-How to use this guide: Since interviews usually utilize a whiteboard or a virtual (non-compiling) notepad, my recommendation is to get out a pencil and paper and write out your solutions to each part of the problem, and once complete compare your answers to the answer key. Or, complete these with a friend who can act as the interviewer!
-Small SQL syntax errors aren’t a big deal during whiteboard/notepad interviews. However, they can be distracting to the interviewer, so ideally practice reducing these so your logic shines through in the interview. 
-The answers I provide may not be the only way to successfully solve the question. Feel free to message with additional solutions and I can add them to this guide! 
-Tips on solving difficult SQL interview questions 
-This advice mirrors typical code interview advice ... 
-Listen carefully to problem description, repeat back the crux of the problem to the interviewer
-Spell out an edge case to demonstrate you actually understand problem (i.e. a row that wouldn’t be included in the output of the SQL you are about to sketch out) 
-(If the problem involves a self-join) For your own benefit sketch out what the self-join will look like — this will typically be at least three columns: a column of interest from the main table, the column to join from the main table, and the column to join from the secondary table 
-Or, as you get more used to self-join problems, you can explain this step verbally 
-Start writing SQL — err towards writing SQL versus trying to perfectly understand the problem. Verbalize your assumptions as you go so your interviewer can correct you if you go astray. 
-Acknowledgments and Additional Resources 
-Some of the problems listed here are adapted from old Periscope blog posts (mostly written around 2014 by ﻿Sean Cook﻿, although his authorship seems to have been removed from the posts following SiSense's ﻿merger with﻿ Periscope) or discussions from Stack Overflow; I've noted them at the start of questions as appropriate. 
+--https://quip.com/2gwZArKuWk7W
 
 ﻿Select Star SQL﻿ has good﻿ challenge questions﻿ that are complementary to the questions in this doc. 
 
