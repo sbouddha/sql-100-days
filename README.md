@@ -913,7 +913,117 @@ BEGIN
 END;
 ```
 
-<br><br>
+---
+### **Exception Handling** (Very Important Topic)
+---
+Predefined exceptions are a set of standard exceptions that are predefined in Oracle PL/SQL. These exceptions provide a way to handle common error conditions that can occur during the execution of a PL/SQL block. Some of the commonly used predefined exceptions include:
+
+* NO_DATA_FOUND: Raised when a SELECT INTO statement returns no rows.
+* TOO_MANY_ROWS: Raised when a SELECT INTO statement returns more than one row.
+* DUP_VAL_ON_INDEX: Raised when a unique constraint or index violation occurs during an INSERT or UPDATE statement.
+* INVALID_NUMBER: Raised when a conversion of a character string to a number fails.
+* ZERO_DIVIDE: Raised when a division or modulus operation is attempted with a divisor of zero.
+* PROGRAM_ERROR: Raised when an unhandled exception occurs within a PL/SQL block.
+* TIMEOUT_ON_RESOURCE: Raised when a timeout occurs while waiting for a resource, such as a lock.
+* VALUE_ERROR: Raised when an assignment or conversion of a value fails due to an invalid data type or value.
+
+These predefined exceptions can be caught and handled using exception handling blocks in PL/SQL. By using predefined exceptions, you can write code to handle specific error conditions and take appropriate actions based on the type of exception raised.
+
+```sql
+--EXCEPTION Handling
+DECLARE
+    v_age NUMBER;
+BEGIN
+    SELECT age INTO v_age
+    FROM student
+    WHERE name = 'Siddharth';
+
+    dbms_output.put_line('Age is ' || v_age);
+EXCEPTION
+    WHEN no_data_found THEN
+        dbms_output.put_line('No data was found');
+    WHEN OTHERS THEN
+        dbms_output.put_line('Other Errors');
+END;
+```
+<br>
+
+---
+### **Procedures** (Very Important Topic)
+---
+
+Modularizing Development with PL/SQL Blocks. PLSQL is a block-structured language. The PLSQL
+code block helps modularize code by using:  
+- Anonymous blocks
+- Procedures and functions
+- Packages
+- Database triggers
+
+The benefits of using modular program constructs are:  
+- Easy maintenance
+- Improved data security and integrity
+- Improved performance
+- Improved code clarity
+
+**What Are PL/SQL Subprograms?**  
+A PL/SQL subprogram is a named PL/SQL block that can be called with a set of parameters.  
+* You can declare and define a subprogram within either a PL/SQL block or another subprogram.
+* A subprogram consists of a specification and a body.
+* A subprogram can be a procedure or a function.
+* Typically, you use a procedure to perform an action and a function to compute and return a value.
+
+**What Are Procedures?**
+* Are a type of subprogram that perform an action
+* Can be stored in the database as a schema object
+* Promote reusability and maintainability
+
+```sql
+--Creating a Procedure
+CREATE OR REPLACE PROCEDURE UPDATE_STUD_AGE (p_stud_id IN NUMBER)
+AS
+BEGIN
+    UPDATE student
+    SET    age = 20
+    WHERE  id = p_stud_id;
+
+    COMMIT;
+EXCEPTION
+  WHEN OTHERS THEN
+             dbms_output.Put_line(SQLCODE);
+
+             dbms_output.Put_line(SQLERRM);
+END; 
+
+--Execute/Running a Procedure
+EXECUTE UPDATE_STUD_AGE(1);
+```
+
+**Calling the Procedure**  
+To call procedure there are 2 options:  
+1. Calling standalone 
+   ```sql
+   EXECUTE UPDATE_STUD_AGE(1);
+   ```
+2. Calling in PLSQL BEGIN-END block:
+   ```sql
+   BEGIN
+   UPDATE_STUD_AGE(1);
+   END;
+   ```
+3. Calling with Parameters:  
+   1. Positional, the position matters here, same as how it is defined in the procedure
+    ```sql
+   EXECUTE UPDATE_STUD_AGE(1);
+    ```
+    2. Named, implemented with the symbol =>
+    ```sql
+   EXECUTE UPDATE_STUD_AGE(p_stud_id=>1);
+    ```
+    3. You can also use the combination of Positional and Named partameters while calling the procedure.  
+
+Note : Try to used Named, as it is more professional.
+
+<br>
 
 ---
 ### **Working with Composite DataTypes**
