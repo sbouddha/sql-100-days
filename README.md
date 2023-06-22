@@ -1022,8 +1022,131 @@ To call procedure there are 2 options:
     3. You can also use the combination of Positional and Named partameters while calling the procedure.  
 
 Note : Try to used Named, as it is more professional.
-
 <br>
+
+---
+### **Function**
+---
+  
+In Oracle, a function is a named PL/SQL block that performs a specific task and returns a value. It can accept input parameters, perform computations, and return a single value as the result. Functions can be used in SQL statements or called from other PL/SQL blocks.
+
+The key differences between a function and a procedure are:
+
+**Return Value**: A function must return a single value, which can be of any valid data type in Oracle, such as a number, string, date, or even a complex data structure. On the other hand, a procedure does not return a value. It may have parameters for input or output, but it does not have a return value.
+
+**Usage**: Functions are primarily used to perform computations and return a result. They can be called from SQL statements, used in expressions, or assigned to variables. Procedures, on the other hand, are used to perform a series of actions or operations. They can have input and output parameters but do not return a value directly.
+
+**Integration with SQL**: Functions can be used directly in SQL statements, such as SELECT statements, WHERE clauses, or expressions. They are often used to encapsulate complex calculations or transformations within SQL queries. Procedures, on the other hand, cannot be used directly in SQL statements. They are called explicitly from PL/SQL blocks or other stored program units.
+
+Here's an example of a simple function in Oracle:
+
+```sql
+--Function Creation
+CREATE OR REPLACE FUNCTION get_date
+RETURN DATE --this is important
+AS 
+    v_date DATE;
+BEGIN
+    SELECT sysdate INTO v_date
+    FROM dual;
+    
+    RETURN v_date; --this is important
+END;
+
+--Fetch the value fron the function
+DECLARE
+    v_get_result DATE;
+BEGIN
+    v_get_result := get_date(); --this is assigning the value from function to this variable
+    dbms_output.put_line('Current DateTime is '||v_get_result);
+END;
+
+--You can also fetch the value of a functio in a SELECT statement:
+select get_date() from dual;
+--21.06.2023 12.56.28
+```
+
+On the other hand, a procedure would perform a series of actions or operations without returning a value.
+
+| Aspect              | Function                                   | Procedure                                     |
+|---------------------|--------------------------------------------|-----------------------------------------------|
+| Return Value        | Must return a single value                 | Does not return a value                       |
+| Return Clause       | Must contain RETURN clause in the Header   | Do not contain RETURN clause in the Header    |
+| Usage               | Perform computations and return a result   | Perform a series of actions or operations     |
+| SQL Integration     | Can be used directly in SQL statements     | Cannot be used directly in SQL statements     |
+| Input Parameters    | Can have input parameters                  | Can have input parameters                     |
+| Output Parameters   | Can have output parameters                 | Can have output parameters                    |
+| Parameter Direction | Can have IN, OUT, or IN OUT parameter types| Can have IN, OUT, or IN OUT parameter types   |
+| Call Convention     | Called from SQL statements or PL/SQL blocks| Called explicitly from PL/SQL blocks/programs |
+
+Points to Note : 
+- A procedure with one single OUT parameter should rather be written as Function.
+- A function cannot have a DML statement in it, else the function execution will fail.
+- You can use functions in SELECT, WHERE and ORDER BY expressions. eg:
+```sql
+select rectange_area(4,5) from dual;
+```
+<br>
+
+---
+### **Packages** (Very Important)
+---
+A package in Oracle PL/SQL is a schema object that groups related procedures, functions, variables, and other program objects together. It provides a way to organize and encapsulate code in a modular and reusable manner.   
+A package consists of a **specification** and a **body**. The specification defines the interface of the package, while the body contains the implementation.
+
+Benefits of Using Packages:
+
+- **Modularity and Organization**: Packages allow you to organize related code into logical units, making it easier to manage and maintain your codebase.
+- **Encapsulation**: Packages provide encapsulation, hiding the implementation details and exposing only the necessary interfaces to other program units.
+- **Code Reusability**: Packages enable code reuse as they can be referenced and used by multiple program units.
+- **Global Data Sharing**: Variables and cursors defined in a package can be shared across different procedures and functions within the package.
+- **Privileges and Security**: Packages allow you to control access to code by granting privileges at the package level.
+
+**Creating and Using Packages:**
+To create a package, you need to define its specification and body. Here's an example that demonstrates the creation and usage of a simple package:
+
+```sql
+-- Package Specification
+CREATE OR REPLACE PACKAGE your_package_name IS
+  PROCEDURE greet;
+  FUNCTION add_numbers(a NUMBER, b NUMBER) RETURN NUMBER;
+END your_package_name;
+
+-- Package Body
+CREATE OR REPLACE PACKAGE BODY your_package_name IS
+  PROCEDURE greet IS
+  BEGIN
+    dbms_output.put_line('Hello, World!');
+  END greet;
+
+  FUNCTION add_numbers(a NUMBER, b NUMBER) RETURN NUMBER IS
+  BEGIN
+    RETURN a + b;
+  END add_numbers;
+END your_package_name;
+```
+In the above example, the package your_package_name is created with a specification and body. The specification declares two program objects: a procedure greet and a function add_numbers.
+
+To use the package, you can call its procedures and functions as follows:
+```sql
+-- Calling a Procedure
+BEGIN
+  your_package_name.greet;
+END;
+
+-- Calling a Function
+DECLARE
+  result NUMBER;
+BEGIN
+  result := your_package_name.add_numbers(10, 5);
+  dbms_output.put_line('Result: ' || result);
+END;
+```
+
+Notes:
+- Package specification do not need BEGIN
+- When calling a procedure or function from a package, you need to use the package name followed by the procedure or function name. Package objects can also have parameters, exceptions, and other features to enhance their functionality.
+
 
 ---
 ### **Working with Composite DataTypes**
