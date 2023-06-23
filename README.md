@@ -1091,13 +1091,17 @@ select rectange_area(4,5) from dual;
 ---
 ### **Packages** (Very Important)
 ---
-A package in Oracle PL/SQL is a schema object that groups related procedures, functions, variables, and other program objects together. It provides a way to organize and encapsulate code in a modular and reusable manner.   
-A package consists of a **specification** and a **body**. The specification defines the interface of the package, while the body contains the implementation.
-
+A package in Oracle PL/SQL is a schema object that groups related procedures, functions, variables, and other program objects together. It provides a way to organize and encapsulate code in a modular and reusable manner.  
+A package consists of two parts:
+- **Specification** 
+- **Body**.  
+ 
+The specification defines the interface of the package, while the body contains the implementation.  
 Benefits of Using Packages:
 
-- **Modularity and Organization**: Packages allow you to organize related code into logical units, making it easier to manage and maintain your codebase.
-- **Encapsulation**: Packages provide encapsulation, hiding the implementation details and exposing only the necessary interfaces to other program units.
+- **Modularity and Organization (Easier Maintanance)**: Packages allow you to organize related code into logical units, making it easier to manage and maintain your codebase.
+- **Encapsulation (Hiding information)**: Packages provide encapsulation, hiding the implementation details and exposing only the necessary interfaces to other program units.
+- **Easier Application Design**: Coding and compiling the Specification and Body separately.
 - **Code Reusability**: Packages enable code reuse as they can be referenced and used by multiple program units.
 - **Global Data Sharing**: Variables and cursors defined in a package can be shared across different procedures and functions within the package.
 - **Privileges and Security**: Packages allow you to control access to code by granting privileges at the package level.
@@ -1145,8 +1149,49 @@ END;
 
 Notes:
 - Package specification do not need BEGIN
-- When calling a procedure or function from a package, you need to use the package name followed by the procedure or function name. Package objects can also have parameters, exceptions, and other features to enhance their functionality.
+- When calling a procedure or function from a package, you need to use the package name followed by the procedure or function name. Package objects can also have parameters, exceptions, and other features to enhance their functionality.  
+One more Example below:
+```sql
+--This is how you create a package
 
+--Package specification 
+CREATE OR REPLACE PACKAGE sid_package_1 AS
+    FUNCTION greetings RETURN VARCHAR2;
+
+    PROCEDURE area_of_square (
+        side NUMBER
+    );
+END sid_package_1;
+
+--Package body
+CREATE OR REPLACE PACKAGE BODY sid_package_1 AS
+
+    FUNCTION greetings RETURN VARCHAR2 AS
+    BEGIN
+        RETURN 'Hello this is my first Package';
+    END greetings;
+
+    PROCEDURE area_of_square (
+        side NUMBER
+    ) AS
+    BEGIN
+        dbms_output.put_line('The area is ' || side * side);
+    END area_of_square;
+END sid_package_1;
+
+--Calling a Procedure from the package
+BEGIN
+   sid_package_1.area_of_square(6);
+END;
+
+--Calling a Function from the package
+DECLARE
+    v_out_string VARCHAR2(100);
+BEGIN
+    v_out_string := sid_package_1.greetings();
+    dbms_output.put_line('The message is ' || v_out_string);
+END;
+```
 
 ---
 ### **Working with Composite DataTypes**
