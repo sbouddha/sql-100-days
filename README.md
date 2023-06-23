@@ -1019,7 +1019,7 @@ To call procedure there are 2 options:
     ```sql
    EXECUTE UPDATE_STUD_AGE(p_stud_id=>1);
     ```
-    3. You can also use the combination of Positional and Named partameters while calling the procedure.  
+    3. You can also use the combination of Positional and Named parameters while calling the procedure.  
 
 Note : Try to used Named, as it is more professional.
 <br>
@@ -1053,7 +1053,7 @@ BEGIN
     RETURN v_date; --this is important
 END;
 
---Fetch the value fron the function
+--Fetch the value from the function
 DECLARE
     v_get_result DATE;
 BEGIN
@@ -1061,30 +1061,30 @@ BEGIN
     dbms_output.put_line('Current DateTime is '||v_get_result);
 END;
 
---You can also fetch the value of a functio in a SELECT statement:
+--You can also fetch the value of a function in a SELECT statement:
 select get_date() from dual;
 --21.06.2023 12.56.28
 ```
 
 On the other hand, a procedure would perform a series of actions or operations without returning a value.
 
-| Aspect              | Function                                   | Procedure                                     |
-|---------------------|--------------------------------------------|-----------------------------------------------|
-| Return Value        | Must return a single value                 | Does not return a value                       |
-| Return Clause       | Must contain RETURN clause in the Header   | Do not contain RETURN clause in the Header    |
-| Usage               | Perform computations and return a result   | Perform a series of actions or operations     |
-| SQL Integration     | Can be used directly in SQL statements     | Cannot be used directly in SQL statements     |
-| Input Parameters    | Can have input parameters                  | Can have input parameters                     |
-| Output Parameters   | Can have output parameters                 | Can have output parameters                    |
-| Parameter Direction | Can have IN, OUT, or IN OUT parameter types| Can have IN, OUT, or IN OUT parameter types   |
-| Call Convention     | Called from SQL statements or PL/SQL blocks| Called explicitly from PL/SQL blocks/programs |
+| Aspect              | Function                                    | Procedure                                     |
+| ------------------- | ------------------------------------------- | --------------------------------------------- |
+| Return Value        | Must return a single value                  | Does not return a value                       |
+| Return Clause       | Must contain RETURN clause in the Header    | Do not contain RETURN clause in the Header    |
+| Usage               | Perform computations and return a result    | Perform a series of actions or operations     |
+| SQL Integration     | Can be used directly in SQL statements      | Cannot be used directly in SQL statements     |
+| Input Parameters    | Can have input parameters                   | Can have input parameters                     |
+| Output Parameters   | Can have output parameters                  | Can have output parameters                    |
+| Parameter Direction | Can have IN, OUT, or IN OUT parameter types | Can have IN, OUT, or IN OUT parameter types   |
+| Call Convention     | Called from SQL statements or PL/SQL blocks | Called explicitly from PL/SQL blocks/programs |
 
 Points to Note : 
 - A procedure with one single OUT parameter should rather be written as Function.
 - A function cannot have a DML statement in it, else the function execution will fail.
 - You can use functions in SELECT, WHERE and ORDER BY expressions. eg:
 ```sql
-select rectange_area(4,5) from dual;
+select rectangle_area(4,5) from dual;
 ```
 <br>
 
@@ -1099,7 +1099,7 @@ A package consists of two parts:
 The specification defines the interface of the package, while the body contains the implementation.  
 Benefits of Using Packages:
 
-- **Modularity and Organization (Easier Maintanance)**: Packages allow you to organize related code into logical units, making it easier to manage and maintain your codebase.
+- **Modularity and Organization (Easier Maintenance)**: Packages allow you to organize related code into logical units, making it easier to manage and maintain your codebase.
 - **Encapsulation (Hiding information)**: Packages provide encapsulation, hiding the implementation details and exposing only the necessary interfaces to other program units.
 - **Easier Application Design**: Coding and compiling the Specification and Body separately.
 - **Code Reusability**: Packages enable code reuse as they can be referenced and used by multiple program units.
