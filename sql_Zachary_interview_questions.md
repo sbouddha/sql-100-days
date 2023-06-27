@@ -1,15 +1,18 @@
-The Best Medium-Hard Data Analyst SQL Interview Questions  
+- [**The Best Medium-Hard Data Analyst SQL Interview Questions**](#the-best-medium-hard-data-analyst-sql-interview-questions)
+  - [**Background \& Motivation**](#background--motivation)
+  - [**Assumptions \& How to use this guide**](#assumptions--how-to-use-this-guide)
+  - [**Tips on solving difficult SQL interview questions**](#tips-on-solving-difficult-sql-interview-questions)
+  - [**Self-Join Practice Problems**](#self-join-practice-problems)
+  - [**Window Function Practice Problems**](#window-function-practice-problems)
+  - [**Other Medium/Hard SQL Practice Problems**](#other-mediumhard-sql-practice-problems)
+
+## **The Best Medium-Hard Data Analyst SQL Interview Questions**  
 
 By Zachary Thomas (zthomas.nc@gmail.com, Twitter, LinkedIn) 
 
-Tip: See the Table of Contents (document outline) by hovering over the vertical line on the right side of the page 
+### **Background & Motivation**
 
-Update: Thanks everyone for the support and feedback! See this discussion on this post on Hacker News, Linkedin, Eric Weber’s Linkedin post. Also, feel free to check out my Medium post on Metric Design. Thank you!
-
-Background & Motivation
-
-The first 70% of SQL is pretty straightforward but the remaining 30% can be pretty tricky.
-
+*The first 70% of SQL is pretty straightforward but the remaining 30% can be pretty tricky.*
 
 Between the fall of 2015 and the summer of 2019 I interviewed for data analyst and data scientists positions four separate times, getting to onsite interviews at over a dozen companies. After an interview in 2017 went poorly — mostly due to me floundering at the more difficult SQL questions they asked me — I started putting together a study guide of medium and hard SQL questions to better prepare and found it particularly useful during my 2019 interview cycle. Over the past year I have shared that guide with a couple of friends, and with the extra time on my hands due to the coronavirus pandemic, I have polished it up into this doc. 
 
@@ -23,18 +26,16 @@ To be clear, data analyst and data scientist interviews consist of more than SQL
 
 In the future, I may transition this doc to a website like Select Star SQL with an embedded SQL editor so that readers can write SQL statements to questions and get real-time feedback on their code. Another option could be adding these questions as problems on Leetcode. For the time being though I just wanted to publish this doc so that people could find it useful now.  
 
-I would love to get your feedback on this doc. Please drop a note if you find this useful, have improvements/corrections, or encounter other good resources for medium/hard difficulty SQL questions. 
+### **Assumptions & How to use this guide** 
 
-Assumptions & How to use this guide 
+**Assumptions about SQL proficiency:** This guide assumes you have a working knowledge of SQL. You probably use it frequently at work already but want to sharpen your skills on topics like self-joins and window functions. 
 
-Assumptions about SQL proficiency: This guide assumes you have a working knowledge of SQL. You probably use it frequently at work already but want to sharpen your skills on topics like self-joins and window functions. 
-
-How to use this guide: Since interviews usually utilize a whiteboard or a virtual (non-compiling) notepad, my recommendation is to get out a pencil and paper and write out your solutions to each part of the problem, and once complete compare your answers to the answer key. Or, complete these with a friend who can act as the interviewer!
+**How to use this guide:** Since interviews usually utilize a whiteboard or a virtual (non-compiling) notepad, my recommendation is to get out a pencil and paper and write out your solutions to each part of the problem, and once complete compare your answers to the answer key. Or, complete these with a friend who can act as the interviewer!
 
 * Small SQL syntax errors aren’t a big deal during whiteboard/notepad interviews. However, they can be distracting to the interviewer, so ideally practice reducing these so your logic shines through in the interview. 
 * The answers I provide may not be the only way to successfully solve the question. Feel free to message with additional solutions and I can add them to this guide! 
 
-Tips on solving difficult SQL interview questions 
+### **Tips on solving difficult SQL interview questions** 
 
 This advice mirrors typical code interview advice ... 
 
@@ -44,7 +45,7 @@ This advice mirrors typical code interview advice ...
     1. Or, as you get more used to self-join problems, you can explain this step verbally 
 4. Start writing SQL — err towards writing SQL versus trying to perfectly understand the problem. Verbalize your assumptions as you go so your interviewer can correct you if you go astray. 
 
-Acknowledgments and Additional Resources 
+**Acknowledgments and Additional Resources** 
 
 Some of the problems listed here are adapted from old Periscope blog posts (mostly written around 2014 by Sean Cook, although his authorship seems to have been removed from the posts following SiSense's merger with Periscope) or discussions from Stack Overflow; I've noted them at the start of questions as appropriate. 
 
@@ -52,14 +53,16 @@ Select Star SQL has goodchallenge questions that are complementary to the questi
 
 Please note that these questions are not literal copies of SQL interview questions I have encountered while interviewing nor were they interview questions used at a company I have worked at or work at. 
 
-Self-Join Practice Problems 
+---
 
-#1: MoM Percent Change 
+### **Self-Join Practice Problems** 
 
-Context: Oftentimes it's useful to know how much a key metric, such as monthly active users, changes between months. Say we have a table logins in the form: 
+**#1: MoM Percent Change** 
+
+**Context**: Oftentimes it's useful to know how much a key metric, such as monthly active users, changes between months. Say we have a table logins in the form: 
 
 | user_id | date       |
-|---------|------------|
+| ------- | ---------- |
 | 1       | 2018-07-01 |
 | 234     | 2018-07-02 |
 | 3       | 2018-07-02 |
@@ -67,11 +70,15 @@ Context: Oftentimes it's useful to know how much a key metric, such as monthly a
 | ...     | ...        |
 | 234     | 2018-10-04 |
 
-Task: Find the month-over-month percentage change for monthly active users (MAU). 
-Solution:
+**Task**: Find the month-over-month percentage change for monthly active users (MAU). 
+
+---
+
+*Solution:*
 
 (This solution, like other solution code blocks you will see in this doc, contains comments about SQL syntax that may differ between flavors of SQL or other comments about the solutions as listed) 
 
+```sql
 WITH mau AS 
 (
   SELECT 
@@ -112,13 +119,11 @@ WITH mau AS
     * Could also have done `ON b.month_timestamp = a.month_timestamp + interval '1 month'` 
     */
     mau b ON a.month_timestamp = b.month_timestamp - interval '1 month' 
-  
+```
 
+**#2: Tree Structure Labeling**   
 
-
-#2: Tree Structure Labeling   
-
-Context: Say you have a table tree with a column of nodes and a column corresponding parent nodes 
+**Context**: Say you have a table tree with a column of nodes and a column corresponding parent nodes 
 
 node   parent
 1       2
@@ -127,7 +132,7 @@ node   parent
 4       3
 5       NULL 
 
-Task: Write SQL such that we label each node as a “leaf”, “inner” or “Root” node, such that for the nodes above we get: 
+**Task**: Write SQL such that we label each node as a “leaf”, “inner” or “Root” node, such that for the nodes above we get: 
 
 node    label  
 1       Leaf
@@ -139,8 +144,11 @@ node    label
 A solution which works for the above example will receive full credit, although you can receive extra credit for providing a solution that is generalizable to a tree of any depth (not just depth = 2, as is the case in the example above). 
 
 (Side note: this link has more details on Tree data structure terminology. Not needed to solve the problem though!)
-Solution:
 
+---
+
+*Solution:*
+```sql
 Note: This solution works for the example above with tree depth = 2, but is not generalizable beyond that. 
 
 WITH join_table AS 
@@ -165,12 +173,12 @@ SELECT
     END AS label 
  FROM 
     join_table 
-        
+```       
 
 An alternate solution, that is generalizable to any tree depth: 
 
-Acknowledgement: this more generalizable solution was contributed by Fabian Hofmann on 5/2/20. Thank, FH! 
-
+**Acknowledgement**: this more generalizable solution was contributed by Fabian Hofmann on 5/2/20. Thank, FH! 
+```sql
 WITH join_table AS
 (
     SELECT 
@@ -195,11 +203,11 @@ SELECT
     END AS label
 FROM 
     join_table 
-
+```
 An alternate solution, without explicit joins: 
 
-Acknowledgement: William Chargin on 5/2/20 noted that WHERE parent IS NOT NULL  is needed to make this solution return Leaf instead of NULL. Thanks, WC! 
-
+**Acknowledgement**: William Chargin on 5/2/20 noted that WHERE parent IS NOT NULL  is needed to make this solution return Leaf instead of NULL. Thanks, WC! 
+```sql
 SELECT 
     node,
     CASE 
@@ -210,19 +218,18 @@ SELECT
     END AS label 
  from 
     tree
+```
 
+**#3: Retained Users Per Month (multi-part)**
 
+**Acknowledgement**: this problem is adapted from SiSense’s “Using Self Joins to Calculate Your Retention, Churn, and Reactivation Metrics” blog post
 
-#3: Retained Users Per Month (multi-part)
+**Part 1:**
 
-Acknowledgement: this problem is adapted from SiSense’s “Using Self Joins to Calculate Your Retention, Churn, and Reactivation Metrics” blog post
-
-Part 1: 
-
-Context: Say we have login data in the table logins: 
+**Context**: Say we have login data in the table logins: 
 
 | user_id | date       |
-|---------|------------|
+| ------- | ---------- |
 | 1       | 2018-07-01 |
 | 234     | 2018-07-02 |
 | 3       | 2018-07-02 |
@@ -230,9 +237,10 @@ Context: Say we have login data in the table logins:
 | ...     | ...        |
 | 234     | 2018-10-04 |
 
-Task: Write a query that gets the number of retained users per month. In this case, retention for a given month is defined as the number of users who logged in that month who also logged in the immediately previous month. 
-Solution:
+**Task**: Write a query that gets the number of retained users per month. In this case, retention for a given month is defined as the number of users who logged in that month who also logged in the immediately previous month.
 
+*Solution:*
+```sql
 SELECT 
     DATE_TRUNC('month', a.date) month_timestamp, 
     COUNT(DISTINCT a.user_id) retained_users 
@@ -244,13 +252,14 @@ SELECT
                                              interval '1 month'
  GROUP BY 
     date_trunc('month', a.date)
+```
 
-Acknowledgement: Tom Moertel pointed out de-duping user-login pairs before the self-join would make the solution more efficient and contributed the alternate solution below. Thanks, TM! 
+**Acknowledgement**: Tom Moertel pointed out de-duping user-login pairs before the self-join would make the solution more efficient and contributed the alternate solution below. Thanks, TM! 
 
-Note: De-duping logins would also make the given solutions to Parts 2 and 3 of this problem more efficient as well.
+**Note**: De-duping logins would also make the given solutions to Parts 2 and 3 of this problem more efficient as well.
 
 Alternate solution: 
-
+```sql
 WITH DistinctMonthlyUsers AS (
   /*
   * For each month, compute the *set* of users having logins.
@@ -273,12 +282,12 @@ LEFT JOIN
     AND 
     CurrentMonth.user_id = PriorMonth.user_id
 GROUP BY CurrentMonth.month_timestamp
+```
+**Part 2:** 
 
-Part 2: 
-
-Task: Now we’ll take retention and turn it on its head: Write a query to find many users last month did not come back this month. i.e. the number of churned users.  
-Solution:
-
+**Task**: Now we’ll take retention and turn it on its head: Write a query to find many users last month did not come back this month. i.e. the number of churned users.    
+*Solution:*
+```sql
 SELECT 
     DATE_TRUNC('month', a.date) month_timestamp, 
     COUNT(DISTINCT b.user_id) churned_users 
@@ -292,16 +301,16 @@ WHERE
     a.user_id IS NULL 
 GROUP BY 
     DATE_TRUNC('month', a.date)
-
+```
 Note that there are solutions to this problem that can use LEFT or RIGHT joins. 
 
-Part 3:
+**Part 3:**
 
-Context: You now want to see the number of active users this month who have been reactivated — in other words, users who have churned but this month they became active again. Keep in mind a user can reactivate after churning before the previous month. An example of this could be a user active in February (appears in logins), no activity in March and April, but then active again in May (appears in logins), so they count as a reactivated user for May . 
+**Context**: You now want to see the number of active users this month who have been reactivated — in other words, users who have churned but this month they became active again. Keep in mind a user can reactivate after churning before the previous month. An example of this could be a user active in February (appears in logins), no activity in March and April, but then active again in May (appears in logins), so they count as a reactivated user for May . 
 
-Task: Create a table that contains the number of reactivated users per month. 
-Solution:
-
+**Task**: Create a table that contains the number of reactivated users per month. 
+*Solution:*
+```sql
      SELECT 
         DATE_TRUNC('month', a.date) month_timestamp,
         COUNT(DISTINCT a.user_id) reactivated_users,
@@ -321,17 +330,16 @@ Solution:
         DATE_TRUNC('month', a.date)
      HAVING 
         month_timestamp > most_recent_active_previously + interval '1 month' 
+```
 
+**#4: Cumulative Sums** 
 
+**Acknowledgement**: This problem was inspired by Sisense’s“Cash Flow modeling in SQL” blog post 
 
-#4: Cumulative Sums 
-
-Acknowledgement: This problem was inspired by Sisense’s“Cash Flow modeling in SQL” blog post 
-
-Context: Say we have a table transactions in the form:
+**Context**: Say we have a table transactions in the form:
 
 | date       | cash_flow |
-|------------|-----------|
+| ---------- | --------- |
 | 2018-01-01 | -1000     |
 | 2018-01-02 | -100      |
 | 2018-01-03 | 50        |
@@ -342,14 +350,14 @@ Where cash_flow is the revenues minus costs for each day.
 Task: Write a query to get cumulative cash flow for each day such that we end up with a table in the form below: 
 
 | date       | cumulative_cf |
-|------------|---------------|
+| ---------- | ------------- |
 | 2018-01-01 | -1000         |
 | 2018-01-02 | -1100         |
 | 2018-01-03 | -1050         |
 | ...        | ...           |
 
-Solution:
-
+*Solution:*
+```sql
 SELECT 
     a.date date, 
     SUM(b.cash_flow) as cumulative_cf 
@@ -361,9 +369,9 @@ GROUP BY
     a.date 
 ORDER BY 
     date ASC
-
+```
 Alternate solution using a window function (more efficient!):  
-
+```sql
 SELECT 
     date, 
     SUM(cash_flow) OVER (ORDER BY date ASC) as cumulative_cf 
@@ -371,17 +379,18 @@ FROM
     transactions 
 ORDER BY 
     date ASC
+```
 
-#5: Rolling Averages 
+**#5: Rolling Averages** 
 
-Acknowledgement: This problem is adapted from Sisense’s “Rolling Averages in MySQL and SQL Server” blog post 
+**Acknowledgement**: This problem is adapted from Sisense’s “Rolling Averages in MySQL and SQL Server” blog post 
 
-Note: there are different ways to compute rolling/moving averages. Here we'll use a preceding average which means that the metric for the 7th day of the month would be the average of the preceding 6 days and that day itself. 
+**Note**: there are different ways to compute rolling/moving averages. Here we'll use a preceding average which means that the metric for the 7th day of the month would be the average of the preceding 6 days and that day itself. 
 
 Context: Say we have table signups in the form: 
 
 | date       | sign_ups |
-|------------|----------|
+| ---------- | -------- |
 | 2018-01-01 | 10       |
 | 2018-01-02 | 20       |
 | 2018-01-03 | 50       |
@@ -389,8 +398,8 @@ Context: Say we have table signups in the form:
 | 2018-10-01 | 35       |
 
 Task: Write a query to get 7-day rolling (preceding) average of daily sign ups. 
-Solution:
-
+*Solution:*
+```sql
 SELECT 
   a.date, 
   AVG(b.sign_ups) average_sign_ups 
@@ -400,36 +409,38 @@ JOIN
   signups b ON a.date <= b.date + interval '6 days' AND a.date >= b.date
 GROUP BY 
   a.date
+```
 
-Acknowledgement: Shay Halfon pointed out that using a window function would produce an identical and more efficient solution. Thanks, SH! 
+**Acknowledgement**: Shay Halfon pointed out that using a window function would produce an identical and more efficient solution. Thanks, SH! 
 
 Alternate solution: 
-
+```sql
 SELECT 
     date,       
     AVG(sign_ups) OVER(ORDER BY date ROWS BETWEEN 6 PRECEDING AND 0 PRECEDING)
 from 
     sign_ups 
+```
 
-#6: Multiple Join Conditions 
+**#6: Multiple Join Conditions** 
 
-Acknowledgement: This problem was inspired by Sisense’s “Analyzing Your Email with SQL” blog post 
+**Acknowledgement**: This problem was inspired by Sisense’s “Analyzing Your Email with SQL” blog post 
 
-Context: Say we have a table emails that includes emails sent to and from zach@g.com:
+**Context**: Say we have a table emails that includes emails sent to and from zach@g.com:
 
-| id | subject  | from         | to           | timestamp           |
-|----|----------|--------------|--------------|---------------------|
-| 1  | Yosemite | zach@g.com   | thomas@g.com | 2018-01-02 12:45:03 |
-| 2  | Big Sur  | sarah@g.com  | thomas@g.com | 2018-01-02 16:30:01 |
-| 3  | Yosemite | thomas@g.com | zach@g.com   | 2018-01-02 16:35:04 |
-| 4  | Running  | jill@g.com   | zach@g.com   | 2018-01-03 08:12:45 |
-| 5  | Yosemite | zach@g.com   | thomas@g.com | 2018-01-03 14:02:01 |
-| 6  | Yosemite | thomas@g.com | zach@g.com   | 2018-01-03 15:01:05 |
-| .. | ..       | ..           | ..           | ..                  |
+| id  | subject  | from         | to           | timestamp           |
+| --- | -------- | ------------ | ------------ | ------------------- |
+| 1   | Yosemite | zach@g.com   | thomas@g.com | 2018-01-02 12:45:03 |
+| 2   | Big Sur  | sarah@g.com  | thomas@g.com | 2018-01-02 16:30:01 |
+| 3   | Yosemite | thomas@g.com | zach@g.com   | 2018-01-02 16:35:04 |
+| 4   | Running  | jill@g.com   | zach@g.com   | 2018-01-03 08:12:45 |
+| 5   | Yosemite | zach@g.com   | thomas@g.com | 2018-01-03 14:02:01 |
+| 6   | Yosemite | thomas@g.com | zach@g.com   | 2018-01-03 15:01:05 |
+| ..  | ..       | ..           | ..           | ..                  |
 
-Task: Write a query to get the response time per email (id) sent to zach@g.com . Do not include ids that did not receive a response from zach@g.com. Assume each email thread has a unique subject. Keep in mind a thread may have multiple responses back-and-forth between zach@g.com and another email address. 
-Solution:
-
+**Task**: Write a query to get the response time per email (id) sent to zach@g.com . Do not include ids that did not receive a response from zach@g.com. Assume each email thread has a unique subject. Keep in mind a thread may have multiple responses back-and-forth between zach@g.com and another email address. 
+*Solution:*
+```sql
 SELECT 
     a.id, 
     MIN(b.timestamp) - a.timestamp as time_to_respond 
@@ -449,14 +460,13 @@ JOIN
     a.to = 'zach@g.com' 
  GROUP BY 
     a.id 
+```
 
+### **Window Function Practice Problems** 
 
+**#1: Get the ID with the highest value** 
 
-Window Function Practice Problems 
-
-#1: Get the ID with the highest value 
-
-Context: Say we have a table salaries with data on employee salary and department in the following format: 
+**Context**: Say we have a table salaries with data on employee salary and department in the following format: 
 
   depname  | empno | salary |     
 -----------+-------+--------+
@@ -471,9 +481,9 @@ Context: Say we have a table salaries with data on employee salary and departmen
  sales     |     1 |   5000 | 
  sales     |     4 |   4800 | 
 
-Task: Write a query to get the empno with the highest salary. Make sure your solution can handle ties!
-Solution:
-
+**Task**: Write a query to get the empno with the highest salary. Make sure your solution can handle ties!
+*Solution:*
+```sql
 WITH max_salary AS (
     SELECT 
         MAX(salary) max_salary
@@ -486,9 +496,9 @@ FROM
     salaries s
 JOIN 
     max_salary ms ON s.salary = ms.max_salary 
-
+```
 Alternate solution using RANK():
-
+```sql
 WITH sal_rank AS 
   (SELECT 
     empno, 
@@ -501,14 +511,14 @@ FROM
   sal_rank
 WHERE 
   rnk = 1;
+```
 
 
+**#2: Average and rank with a window function (multi-part)**
 
-#2: Average and rank with a window function (multi-part)
+**Part 1:** 
 
-Part 1: 
-
-Context: Say we have a table salaries in the format:
+**Context**: Say we have a table salaries in the format:
 
   depname  | empno | salary |     
 -----------+-------+--------+
@@ -523,7 +533,7 @@ Context: Say we have a table salaries in the format:
  sales     |     1 |   5000 | 
  sales     |     4 |   4800 | 
 
-Task: Write a query that returns the same table, but with a new column that has average salary per depname. We would expect a table in the form: 
+**Task**: Write a query that returns the same table, but with a new column that has average salary per depname. We would expect a table in the form: 
 
   depname  | empno | salary | avg_salary |     
 -----------+-------+--------+------------+
@@ -538,8 +548,8 @@ Task: Write a query that returns the same table, but with a new column that has 
  sales     |     1 |   5000 |       4867 | 
  sales     |     4 |   4800 |       4867 |
 
-Solution:
-
+*Solution:*
+```sql
 SELECT 
     *, 
     /*
@@ -549,10 +559,11 @@ SELECT
     ROUND(AVG(salary),0) OVER (PARTITION BY depname) avg_salary
 FROM
     salaries
+```
 
-Part 2:
+**Part 2:**
 
-Task: Write a query that adds a column with the rank of each employee based on their salary within their department, where the employee with the highest salary gets the rank of 1. We would expect a table in the form: 
+**Task**: Write a query that adds a column with the rank of each employee based on their salary within their department, where the employee with the highest salary gets the rank of 1. We would expect a table in the form: 
 
   depname  | empno | salary | salary_rank |     
 -----------+-------+--------+-------------+
@@ -567,39 +578,39 @@ Task: Write a query that adds a column with the rank of each employee based on t
  sales     |     1 |   5000 |           1 | 
  sales     |     4 |   4800 |           2 | 
 
-Solution:
-
+*Solution:*
+```sql
 SELECT 
     *, 
     RANK() OVER(PARTITION BY depname ORDER BY salary DESC) salary_rank
  FROM  
     salaries 
+```
 
 
+### **Other Medium/Hard SQL Practice Problems** 
 
-Other Medium/Hard SQL Practice Problems 
+**#1: Histograms** 
 
-#1: Histograms 
-
-Context: Say we have a table sessions where each row is a video streaming session with length in seconds: 
+**Context**: Say we have a table sessions where each row is a video streaming session with length in seconds: 
 
 | session_id | length_seconds |
-|------------|----------------|
+| ---------- | -------------- |
 | 1          | 23             |
 | 2          | 453            |
 | 3          | 27             |
 | ..         | ..             |
 
-Task: Write a query to count the number of sessions that fall into bands of size 5, i.e. for the above snippet, produce something akin to: 
+**Task**: Write a query to count the number of sessions that fall into bands of size 5, i.e. for the above snippet, produce something akin to: 
 
 | bucket  | count |
-|---------|-------|
+| ------- | ----- |
 | 20-25   | 2     |
 | 450-455 | 1     |
 
 Get complete credit for the proper string labels (“5-10”, etc.) but near complete credit for something that is communicable as the bin. 
-Solution:
-
+*Solution:*
+```sql
 WITH bin_label AS 
 (SELECT 
     session_id, 
@@ -614,17 +625,17 @@ WITH bin_label AS
     bin_label
  ORDER BY 
     bin_label ASC 
+```
 
 
+**#2: CROSS JOIN (multi-part)**
 
-#2: CROSS JOIN (multi-part)
+**Part 1:** 
 
-Part 1: 
-
-Context: Say we have a table state_streams where each row is a state and the total number of hours of streaming from a video hosting service: 
+**Context**: Say we have a table state_streams where each row is a state and the total number of hours of streaming from a video hosting service: 
 
 | state | total_streams |
-|-------|---------------|
+| ----- | ------------- |
 | NC    | 34569         |
 | SC    | 33999         |
 | CA    | 98324         |
@@ -636,12 +647,12 @@ Context: Say we have a table state_streams where each row is a state and the tot
 Task: Write a query to get the pairs of states with total streaming amounts within 1000 of each other. For the snippet above, we would want to see something like:
 
 | state_a | state_b |
-|---------|---------|
+| ------- | ------- |
 | NC      | SC      |
 | SC      | NC      |
 
-Solution:
-
+*Solution:*
+```sql
 SELECT
     a.state as state_a, 
     b.state as state_b 
@@ -653,9 +664,9 @@ SELECT
     ABS(a.total_streams - b.total_streams) < 1000
     AND 
     a.state <> b.state 
-
+```
 FYI, CROSS JOIN s can also be written without explicitly specifying a join: 
-
+```sql
 SELECT
     a.state as state_a, 
     b.state as state_b 
@@ -665,16 +676,15 @@ SELECT
     ABS(a.total_streams - b.total_streams) < 1000
     AND 
     a.state <> b.state 
+```
 
+**Part 2:** 
 
-
-Part 2: 
-
-Note: This question is considered more of a bonus problem than an actual SQL pattern. Feel free to skip it!
+**Note**: This question is considered more of a bonus problem than an actual SQL pattern. Feel free to skip it!
 
 Task: How could you modify the SQL from the solution to Part 1 of this question so that duplicates are removed? For example, if we used the sample table from Part 1, the pair NC and SC should only appear in one row instead of two. 
-Solution: 
-
+*Solution:* 
+```sql
 SELECT
     a.state as state_a, 
     b.state as state_b 
@@ -684,36 +694,35 @@ SELECT
     ABS(a.total_streams - b.total_streams) < 1000
     AND 
     a.state > b.state 
+```
 
+**#3: Advancing Counting** 
 
+**Acknowledgement**: This question is adapted from this Stack Overflow question by me (zthomas.nc) 
 
-#3: Advancing Counting 
+**Note**: this question is probably more complex than the kind you would encounter in an interview. Consider it a challenge problem, or feel free to skip it! 
 
-Acknowledgement: This question is adapted from this Stack Overflow question by me (zthomas.nc) 
-
-Note: this question is probably more complex than the kind you would encounter in an interview. Consider it a challenge problem, or feel free to skip it! 
-
-Context: Say I have a table table in the following form, where a user can be mapped to multiple values of class:
+**Context**: Say I have a table table in the following form, where a user can be mapped to multiple values of class:
 
 | user | class |
-|------|-------|
+| ---- | ----- |
 | 1    | a     |
 | 1    | b     |
 | 1    | b     |
 | 2    | b     |
 | 3    | a     |
 
-Task: Assume there are only two possible values for class. Write a query to count the number of users in each class such that any user who has label a and b gets sorted into b, any user with just a gets sorted into a and any user with just b gets into b. 
+**Task**: Assume there are only two possible values for class. Write a query to count the number of users in each class such that any user who has label a and b gets sorted into b, any user with just a gets sorted into a and any user with just b gets into b. 
 
 For table that would result in the following table: 
 
 | class | count |
-|-------|-------|
+| ----- | ----- |
 | a     | 1     |
- | b     | 2     |
+| b     | 2     |
 
-Solution: 
-
+*Solution:* 
+```sql
 WITH usr_b_sum AS 
 (
     SELECT 
@@ -743,11 +752,11 @@ GROUP BY
     class 
 ORDER BY 
     class ASC
-
+```
     
 
 Alternate solution: Using SELECTs in the SELECT statement and UNION: 
-
+```sql
 SELECT 
     "a" class,
     COUNT(DISTINCT user_id) - 
@@ -756,11 +765,12 @@ UNION
 SELECT 
     "b" class,
     (SELECT COUNT(DISTINCT user_id) FROM table WHERE class = 'b') count 
+```
 
 Alternate solution: Since the problem as stated didn’t ask for generalizable solution, you can leverage the fact that b > a to produce this straightforward solution: 
 
-Acknowledgement: Thanks to Karan Gadiya for contributing this solution. Thanks, KG! 
-
+**Acknowledgement**: Thanks to Karan Gadiya for contributing this solution. Thanks, KG! 
+```sql
 WITH max_class AS (
     SELECT
         user, 
@@ -778,4 +788,4 @@ FROM
     max_class
 GROUP BY 
     class    
-
+```
