@@ -606,6 +606,19 @@ SELECT
 FROM
     days_finder;
 ```
+---
+#### **Execution Flow of SQL**
+---
+All SQL statements go through some or all of the following stages:
+- **Parse**
+- **Bind**
+- **Execute**
+- **Fetch**  
+
+• Parse : Check the statement syntax , validating the statement, ensure all referencing objects are correct , The privileges exists  
+• Bind : Check the bind variable if the statement contains Bind Variables.  
+• Execute: Execute the statement (non Queries statements)  
+• Fetch : Retrieve the rows (Queries statements)  
 
 ---
 #### **NESTED BLOCKS**
@@ -1192,6 +1205,74 @@ BEGIN
     dbms_output.put_line('The message is ' || v_out_string);
 END;
 ```
+---
+### **Dynamic SQL**
+---
+Dynamic SQL is a programming technique that allows you to build SQL statements as strings and execute them later. This technique is useful when you need to create SQL statements on the fly (**during run-time not during compile time**), based on user input or other dynamic factors. 
+
+Note : DDL and DCL are not directly allowed to execute in the PL/SQL block, so to execute  them, we have to use EXECUTE IMMEDIATE command before the query.  
+- DDL stands for **Data Definition Language**, which is used to create and modify the structure of objects in a database using predefined commands and a specific syntax. DDL commands include ***CREATE, ALTER, TRUNCATE, DROP, and RENAME***. These commands are used to create, modify, and remove database objects such as tables, indexes, and sequences. DDL commands are used to define the structure of objects in a database using predefined commands and a specific syntax.
+- DCL stands for **Data Control Language**, which is used to control user access in a database and is related to security issues. It allows the database owner to give access, revoke access, and change the given permissions as and when required. DCL commands include ***GRANT, REVOKE, DENY, AUDIT, and UNAUDIT***, which are used to grant or revoke access permissions from any database user.
+
+Here are some examples of how to use dynamic SQL:
+
+**Simple dynamic SQL statement**: This is the simplest form of dynamic SQL, where you build a SQL statement as a string and execute it using the EXECUTE IMMEDIATE command. For example:
+```sql
+CREATE OR REPLACE PROCEDURE DELETE_ANY_TABLE
+( P_TABLE_NAME VARCHAR2)
+IS
+    V_NO_REC NUMBER;
+BEGIN
+    EXECUTE IMMEDIATE 'delete from '||P_TABLE_NAME;
+    V_NO_REC:=SQL%ROWCOUNT;
+    COMMIT; --same rules for commit and rollback
+    DBMS_OUTPUT.PUT_LINE(V_NO_REC ||' record(s) deleted form '||P_TABLE_NAME );
+END;
+
+EXECUTE DELETE_ANY_TABLE('student');
+SELECT * FROM EMP1;
+```
+In this example, the SQL statement is built as a string and stored in the v_sql variable. The EXECUTE IMMEDIATE command is then used to execute the SQL statement.
+
+**Dynamic SQL statement with bind variables**: This form of dynamic SQL allows you to use bind variables in your SQL statement, which can improve performance and security. For example:
+```sql
+SET SERVEROUTPUT ON
+ACCEPT p_grade PROMPT 'Enter grade: '
+DECLARE
+    v_sql_exec_txt VARCHAR2(200);
+BEGIN
+    v_sql_exec_txt := 'SELECT * FROM student WHERE grade = :grade';
+    EXECUTE IMMEDIATE v_sql_exec_txt USING '&p_grade';
+END;
+```
+In this example, the SQL statement includes a bind variable :dept_id. The EXECUTE IMMEDIATE command is then used to execute the SQL statement, with the bind variable value passed in using the USING clause.
+
+**Dynamic SQL statement with DBMS_SQL**: This form of dynamic SQL allows you to use the DBMS_SQL package to build and execute dynamic SQL statements. This package provides a more flexible and powerful way to execute dynamic SQL, but it is also more complex to use. For example:
+```sql
+DECLARE
+  v_cursor INTEGER;
+  v_sql VARCHAR2(200);
+  v_rows INTEGER;
+BEGIN
+  v_sql := 'SELECT * FROM employees WHERE department_id = :dept_id';
+  v_cursor := DBMS_SQL.OPEN_CURSOR;
+  DBMS_SQL.PARSE(v_cursor, v_sql, DBMS_SQL.NATIVE);
+  DBMS_SQL.BIND_VARIABLE(v_cursor, ':dept_id', p_dept_id);
+  v_rows := DBMS_SQL.EXECUTE(v_cursor);
+  DBMS_SQL.CLOSE_CURSOR(v_cursor);
+END;
+```
+In this example, the DBMS_SQL package is used to build and execute the dynamic SQL statement. The OPEN_CURSOR command is used to create a cursor, and the PARSE command is used to parse the SQL statement. The BIND_VARIABLE command is used to bind the :dept_id variable to the p_dept_id parameter. The EXECUTE command is then used to execute the SQL statement, and the CLOSE_CURSOR command is used to close the cursor.
+
+Overall, dynamic SQL is a powerful technique that allows you to build and execute SQL statements dynamically at runtime. It can be useful in a variety of scenarios, but it is important to use it carefully and securely to avoid SQL injection attacks and other security issues.
+
+Note: Dynamic SQL enables you to create DDL, DCL to be written and executes in PLSQL  
+
+Dynamic SQL in PL/SQL allows you to construct and execute SQL statements dynamically at runtime. It enables you to create and execute Data Definition Language (DDL) and Data Control Language (DCL) statements, along with Data Manipulation Language (DML) statements.
+
+With dynamic SQL, you can generate SQL statements based on specific conditions or inputs, and then execute them using the EXECUTE IMMEDIATE statement. This provides flexibility in writing and executing SQL statements that are not known or fixed at compile time.
+
+Dynamic SQL is useful in scenarios where you need to perform operations such as creating or modifying database objects, granting or revoking privileges, or performing complex queries based on dynamic conditions.
 
 ---
 ### **Working with Composite DataTypes**
