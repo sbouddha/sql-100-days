@@ -1275,6 +1275,41 @@ With dynamic SQL, you can generate SQL statements based on specific conditions o
 Dynamic SQL is useful in scenarios where you need to perform operations such as creating or modifying database objects, granting or revoking privileges, or performing complex queries based on dynamic conditions.
 
 ---
+### **Triggers**
+---
+In Oracle, a trigger is a named PL/SQL block that is stored in the database and executed automatically when a triggering event takes place.
+
+The event can be any of the following:
+- A data manipulation language (DML) statement executed against a table, such as INSERT, UPDATE, or DELETE.
+- A database definition (DDL) statement executed against a table, such as CREATE, ALTER, or DROP.
+- A database operation, such as SERVERERROR, LOGON, LOGOFF, STARTUP, or SHUTDOWN.
+
+Triggers can be defined on a table, view, schema, or database with which the event is associated. Triggers are useful in many cases, such as enforcing complex business rules that cannot be established using integrity constraints, preventing invalid transactions, gathering statistical information on table accesses, generating value automatically for derived columns, and auditing sensitive data.
+
+Here is an example of a trigger code that inserts data into a backup table if a delete is done from any employee table:
+
+```sql
+CREATE TABLE employee_backup (
+  employee_id NUMBER,
+  employee_name VARCHAR2(50),
+  deleted_date DATE
+);
+
+CREATE OR REPLACE TRIGGER employee_delete_trigger
+BEFORE DELETE ON employees
+FOR EACH ROW
+BEGIN
+  INSERT INTO employee_backup (employee_id, employee_name, deleted_date)
+  VALUES (:OLD.employee_id, :OLD.employee_name, SYSDATE);
+END;
+```
+In the above example, a backup table named employee_backup is created to store the deleted data. Then, a trigger named employee_delete_trigger is created to fire before a DELETE statement is executed on the employees table. The trigger inserts the deleted data into the employee_backup table, including the employee_id, employee_name, and the deleted_date.  
+
+When a DELETE statement is executed on the employees table, the trigger automatically inserts the deleted data into the employee_backup table. This allows you to keep a record of the deleted data for auditing or recovery purposes.  
+
+In summary, a trigger in Oracle is a named PL/SQL block that is stored in the database and executed automatically when a triggering event takes place. In this example, a trigger is created to insert data into a backup table if a delete is done from any employee table. The trigger inserts the deleted data into the backup table, including the employee ID, employee name, and the deleted date.
+
+---
 ### **Working with Composite DataTypes**
 ---
 **RECORDS :** In Oracle PL/SQL, a RECORD is a composite data type that allows you to define a structure to hold multiple related variables. It is similar to a structure or a record in other programming languages.  
