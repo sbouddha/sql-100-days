@@ -1309,6 +1309,7 @@ When a DELETE statement is executed on the employees table, the trigger automati
 
 In summary, a trigger in Oracle is a named PL/SQL block that is stored in the database and executed automatically when a triggering event takes place. In this example, a trigger is created to insert data into a backup table if a delete is done from any employee table. The trigger inserts the deleted data into the backup table, including the employee ID, employee name, and the deleted date.
 
+
 ---
 ### **Working with Composite DataTypes**
 ---
